@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Average of Two Numbers</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -67,47 +70,33 @@
     <label>Second Number:</label>
     <input type="number" id="num2" placeholder="Enter second number">
 
-    <button onclick="getAverage()">Calculate Average</button>
+    <button id="calc-btn" py-click="calculate">Calculate Average</button>
 
     <div id="output"></div>
   </div>
 
-  <script>
-    async function getAverage() {
-      const n1 = document.getElementById("num1").value;
-      const n2 = document.getElementById("num2").value;
-      const output = document.getElementById("output");
+  <!-- Real Python execution in the browser -->
+  <script type="py">
+    from pyscript import document
 
-      if (n1 === "" || n2 === "") {
-        output.style.display = "block";
-        output.style.background = "#ffebee";
-        output.innerText = "Please fill in both numbers.";
-        return;
-      }
+    def calculate(event):
+        v1 = document.querySelector("#num1").value
+        v2 = document.querySelector("#num2").value
+        output = document.querySelector("#output")
 
-      try {
-        const res = await fetch("/.netlify/functions/average", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ num1: n1, num2: n2 })
-        });
-
-        const data = await res.json();
-        output.style.display = "block";
-
-        if (res.ok) {
-          output.style.background = "#eef6ff";
-          output.innerHTML = `<strong>Total:</strong> ${data.total}<br><strong>Average:</strong> ${data.average}`;
-        } else {
-          output.style.background = "#ffebee";
-          output.innerText = data.error;
-        }
-      } catch (err) {
-        output.style.display = "block";
-        output.style.background = "#ffebee";
-        output.innerText = "Error connecting to server.";
-      }
-    }
+        if v1 and v2:
+            num1 = float(v1)
+            num2 = float(v2)
+            total = num1 + num2
+            avg = total / 2
+            
+            output.style.display = "block"
+            output.style.background = "#eef6ff"
+            output.innerHTML = f"<strong>Total:</strong> {total}<br><strong>Average:</strong> {avg}"
+        else:
+            output.style.display = "block"
+            output.style.background = "#ffebee"
+            output.innerHTML = "Please enter both numbers."
   </script>
 
 </body>
